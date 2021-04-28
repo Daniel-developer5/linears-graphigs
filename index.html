@@ -13,11 +13,17 @@
     <div class="wrapper">
         <div class="form-box d-flex justify-content-center">
             <form class="p-5 d-flex justify-content-center">
-                <div class="input-group">
-                    <span class="input-group-text" id="basic-addon1">y = </span>
-                    <input type="text" class="form-control" placeholder="Enter a linear function" aria-label="Username" aria-describedby="basic-addon1">
-                </div>
-                <button class="btn btn-success ml-2">Create</button>
+               <div class="d-flex">
+                    <div class="d-flex">
+                        <span class="input-group-text" id="basic-addon1">y = </span>
+                        <input type="text" class="form-control" placeholder="Enter a linear function" aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+                    <button class="btn btn-success ml-2">Create</button>
+               </div>
+               <div class="d-flex mt-3 ml-2 align-items-center">
+                   <input type="checkbox" id="checkbox-prev-graphic" />
+                   <label for="checkbox" class="mb-0 ml-2">Keep previous graphic</label>
+               </div>
             </form>
         </div>
         <canvas></canvas>

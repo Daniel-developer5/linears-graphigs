@@ -1,5 +1,6 @@
 const form = document.querySelector('form')
 const input = document.querySelector('form input')
+const checkbox = document.querySelector('#checkbox-prev-graphic')
 const canvas = document.querySelector('canvas')
 
 const parser = new exprEval.Parser()
@@ -12,37 +13,53 @@ const { width: w, height: h } = canvas
 const ox = w / 2
 const oy = h / 2
 
+input.focus()
+
 document.querySelector('form').addEventListener('submit', e => {
     e.preventDefault()
 
-    createPoints(input.value)
+    if (input.value) {
+        if (!checkbox.checked) {
+            $.clearRect(0, 0, w, h)
+            drawAxis(X)
+            drawAxis(Y)
+            drawPerpendicular()
+            drawCoordsStart()
+        }
+
+        createPoints(input.value.replace(/[a-z]/g, 'x'))
+    }
 })
 
-const pointsAmmount = 5
+const pointsAmmount = 11
 
-const getPoints = point => Array(pointsAmmount).fill(0).map((_, index) => point || index)
+const getX = () => [
+    ...Array((pointsAmmount - 1) / 2).fill(0).map((_, index, arr) => (arr.length - index) * -1),
+    0,
+    ...Array((pointsAmmount - 1) / 2).fill(0).map((_, index) => index + 1)
+]
 
 const createPoints = value => {
     drawGrafic({
-        x: getPoints(),
-        y: Array(pointsAmmount).fill(0).map((_, index) => parser.parse(value).evaluate({ x: index, })),
+        x: getX(),
+        y: getX().map(x => parser.parse(value).evaluate({ x, })),
     })
 }
 
 const singleSegment = 20
 
 const drawGrafic = points => {
-    $.beginPath()
-    
     const { x, y, } = points
 
     x.forEach((coord, index) => {
+        $.beginPath()
         $.arc(ox + coord * singleSegment, oy - y[index] * singleSegment, 2, 0, 2 * Math.PI)
         $.stroke()
         $.fill()
         $.closePath()
-        
-        if (x[index + 1]) {
+
+        if (x[index + 1] || x[index + 1] === 0) {
+            $.beginPath()
             $.moveTo(ox + coord * singleSegment, oy - y[index] * singleSegment)
             $.lineTo(ox + x[index + 1] * singleSegment, oy - y[index + 1] * singleSegment)
             $.stroke()

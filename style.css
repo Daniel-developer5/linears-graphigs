@@ -9,4 +9,5 @@
 form {
     width: 500px;
     max-width: 500px;
+    flex-direction: column;
 }
